@@ -69,7 +69,6 @@ class TranscriptionNewLineCommand(sublime_plugin.TextCommand):
 ## PARSE YAML
 # Lire le nom du fichier dans le YAML
 
-
 # Lire le nom des interlocuteurs.
 
 # Set nombre interlocuteurs
