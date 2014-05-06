@@ -1,0 +1,6 @@
+[
+	{ "keys": ["f2"], "command": "vlc_start" },
+    { "keys": ["f3"], "command": "vlc_jog_forward" },
+    { "keys": ["f1"], "command": "vlc_jog_backward" },
+    { "keys": ["ctrl+enter"], "command": "transcription_new_line" },
+]

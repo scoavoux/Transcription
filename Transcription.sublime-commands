@@ -1,0 +1,5 @@
+[
+    { "caption": "VLC Play", "command": "vlc_start" },
+    { "caption": "VLC Jog Forward", "command": "vlc_jog_forward" },
+    { "caption": "VLC Jog Backward", "command": "vlc_jog_backward" },
+]
