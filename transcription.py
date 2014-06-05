@@ -1,17 +1,13 @@
 import sublime, sublime_plugin
 import sys
 import os
-import time
-from . import vlc
 from . import yaml
+from .pydub import AudioSegment
 
-#feed command to vlc socket to get the time played in seconds
-workingdir = os.path.join(os.path.expanduser('~'))
-vlcin = os.path.join(workingdir,'vlc.sock')
-vlcout = os.path.join(workingdir,'vlc.out')
-
-# audiofile = "/home/scoavoux/Dropbox/Thèse/Data/Observation-entretiens MBA/Enregistrements entretiens en salle/40 - 19072012 Femme, conservatrice, école du Louvre, Strasbourg - Benedicte Herbage.WAV"
-# audiofile = "file://" + audiofile
+# instance = vlc.Instance()
+# mediaplayer = instance.media_player_new()
+# media = instance.media_new(filename)
+# mediaplayer.set_media(media)
 
 def yamlparser(view):
 	# look for yaml blocks
@@ -31,7 +27,7 @@ def yamlparser(view):
 	# Parse YAML Blocks
 	parsed_yaml = yaml.load(YAML)
 
-	return(parsed_yaml)
+	return parsed_yaml
 
 # class TranscriptionGetFilePathCommand(sublime_plugin.TextCommand):
 # 	def run(self,view):
@@ -39,15 +35,12 @@ def yamlparser(view):
 # 		filename = parsed_yaml["file"]
 # 		# filepath = "file"
 # 		# Adjust for relative path
-# 		return(filename)
+# 		print(parsed_yaml)
+# 		return filename
 
 # class VlcLaunchCommand(sublime_plugin.ApplicationCommand):
 #     def run(self):
 #     	filename = "/home/scoavoux/Dropbox/Thèse/Data/Observation-entretiens MBA/Enregistrements entretiens en salle/Thèse41 - 20072012 - Femme, employée banque de france, retraite (1).WAV"
-#     	sublime.instance = vlc.Instance()
-#     	sublime.mediaplayer = sublime.instance.media_player_new()
-#     	sublime.media = sublime.instance.media_new(filename)
-#     	sublime.mediaplayer.set_media(sublime.media)
 		
 # class VlcPlayCommand(sublime_plugin.ApplicationCommand):
 # 	def run(self):
@@ -57,43 +50,6 @@ def yamlparser(view):
 # 		sublime.mediaplayer.pause()
 # 		print("stop playing")
 
-class VlcStartCommand(sublime_plugin.TextCommand):
-	def run(self, edit):
-		os.system('echo "pause" | nc.openbsd -U ' + vlcin)
-
-class VlcJogForwardCommand(sublime_plugin.TextCommand):
-	def run(self, edit):
-		os.system('echo "key key-jump+extrashort" | nc.openbsd -U ' + vlcin)
-
-class VlcJogBackwardCommand(sublime_plugin.TextCommand):
-	def run(self, edit):
-		os.system('echo "key key-jump-extrashort" | nc.openbsd -U ' + vlcin)
-
-class TranscriptionNewLineCommand(sublime_plugin.TextCommand):
-	def run(self,edit):
-		
-		# define useful points
-		view = self.view
-		point = view.sel()[0].b
-		line = view.substr(view.line(view.sel()[0]))
-		
-		parsed_yaml = yamlparser(view)
-
-		# Extract Interviewer and Respondant names
-		interviewer = parsed_yaml["interviewer"]
-		respondant = parsed_yaml["respondant"]
-
-		tagi = "> " + interviewer
-		tagr = "> " + respondant
-
-		if line[0:len(tagi)] == tagi:
-		 	self.view.insert(edit, self.view.sel()[0].b, "\n\n> " + respondant + ": ")
-
-		elif line[0:len(tagr)] == tagr:
-		 	self.view.insert(edit, self.view.sel()[0].b, "\n\n> " + interviewer + ": ")
-
-		else:
-			print("You must be on a line beginning by '> interviewer' or '> respondant' for this awesome command to work")
 
 
 ## PARSE YAML
